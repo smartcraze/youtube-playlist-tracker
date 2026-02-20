@@ -192,30 +192,42 @@ export default function PlaylistPage() {
               </Link>
               
               <div className="flex flex-col md:flex-row gap-8 items-start justify-between">
-                  <div className="space-y-4 flex-1">
-                      <h1 className="text-2xl md:text-3xl font-bold tracking-tight">{playlist.name}</h1>
-                       <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                          <span className="flex items-center gap-1.5">
-                              <PlayCircle className="w-4 h-4" />
+                  {/* Playlist Info */}
+                  <div className="space-y-6 flex-1 max-w-2xl">
+                    <div className="space-y-4">
+                      {/* Title & Stats */}
+                      <h1 className="text-3xl md:text-5xl font-bold tracking-tight leading-tight bg-clip-text text-transparent bg-gradient-to-r from-foreground to-foreground/70">
+                        {playlist.name}
+                      </h1>
+                       
+                       <div className="flex items-center gap-6 text-sm font-medium text-muted-foreground">
+                          <span className="flex items-center gap-2 bg-muted/40 px-3 py-1 rounded-full border border-border/50">
+                              <PlayCircle className="w-4 h-4 text-primary" />
                               {playlist.videos.length} videos
                           </span>
-                          <span className="flex items-center gap-1.5">
-                              <Clock className="w-4 h-4" />
+                          <span className="flex items-center gap-2 bg-muted/40 px-3 py-1 rounded-full border border-border/50">
+                              <Clock className="w-4 h-4 text-primary" />
                               {Math.floor(playlist.totalDuration / 3600)}h {Math.floor((playlist.totalDuration % 3600) / 60)}m
                           </span>
                        </div>
+                    </div>
+                    
+                    {/* Primary Actions */}
+                    <div className="flex gap-3">
                        <a 
                           href={playlist.youtubeUrl} 
                           target="_blank" 
                           rel="noopener noreferrer" 
-                          className="inline-flex items-center text-sm font-medium text-primary hover:underline"
+                          className="inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-md bg-red-600 text-white font-semibold hover:bg-red-700 transition-all shadow-sm active:scale-95"
                         >
-                        Open on YouTube <ExternalLink className="h-3 w-3 ml-1" />
+                        <ExternalLink className="h-4 w-4" />
+                        Open on YouTube
                       </a>
+                    </div>
                   </div>
 
                   {/* Stats Card */}
-                  <div className="w-full md:w-auto bg-card border border-border rounded-xl p-6 shadow-sm flex items-center gap-6 shrink-0">
+                  <div className="w-full md:w-auto bg-card border border-border rounded-xl p-8 shadow-sm flex items-center gap-8 shrink-0 hover:shadow-md transition-shadow">
                       <div className="relative">
                            <CircularProgress 
                                 value={completionPercentage} 
@@ -237,60 +249,76 @@ export default function PlaylistPage() {
       </div>
 
       <main className="max-w-5xl mx-auto px-4 py-8">
-        <div className="space-y-3">
+        <div className="flex flex-col gap-3">
           {playlist.videos.map((video, index) => (
             <div 
                 key={video._id} 
-                className={`group flex items-start gap-4 p-4 rounded-xl border border-transparent hover:border-border hover:bg-muted/30 transition-all ${video.completed ? 'opacity-70' : ''}`}
+                className={`group flex items-start sm:items-center gap-4 p-4 rounded-xl border border-border/40 bg-card hover:border-primary/50 hover:bg-muted/40 hover:shadow transition-all duration-200 ${video.completed ? 'opacity-60 bg-muted/20' : ''}`}
             >
                 <div className="mt-1 shrink-0">
                   <button
                     onClick={() => toggleVideoComplete(video._id)}
-                    className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all duration-200 ${
+                    className={`w-6 h-6 rounded-md border-2 flex items-center justify-center transition-all duration-300 active:scale-95 ${
                       video.completed
-                        ? 'bg-accent border-accent text-accent-foreground'
-                        : 'border-muted-foreground/30 hover:border-primary text-transparent'
+                        ? 'bg-primary border-primary text-primary-foreground'
+                        : 'border-muted-foreground/30 hover:border-primary text-transparent hover:bg-primary/5'
                     }`}
                   >
                     <CheckCircle2 className="w-4 h-4" />
                   </button>
                 </div>
 
-                <div className="flex-1 min-w-0 space-y-1">
-                  <div className="flex items-start justify-between gap-4">
+                <div className="flex-1 min-w-0 flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+                  
+                  {/* Left: Content */}
+                  <div className="flex flex-col gap-1.5 flex-1 min-w-0">
                       <a
                         href={video.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className={`font-medium text-base hover:text-primary transition-colors line-clamp-2 ${
+                        className={`font-semibold text-base md:text-lg leading-snug hover:text-primary transition-colors line-clamp-2 w-fit group/link ${
                           video.completed ? 'text-muted-foreground line-through decoration-border' : 'text-foreground'
                         }`}
                       >
                         {video.title}
+                        <ExternalLink className="inline-block w-3.5 h-3.5 ml-2 opacity-0 -translate-x-1 group-hover/link:opacity-100 group-hover/link:translate-x-0 transition-all text-muted-foreground" />
                       </a>
-                      <span className="text-xs font-mono text-muted-foreground shrink-0 border border-border px-1.5 py-0.5 rounded">
-                          {Math.floor(video.duration / 60)}:{(video.duration % 60).toString().padStart(2, '0')}
-                      </span>
+                      
+                      <div className="flex items-center gap-3 text-xs text-muted-foreground/80 font-mono">
+                         <span className="bg-muted/50 px-1.5 py-0.5 rounded border border-border/50">
+                            {Math.floor(video.duration / 60)}:{(video.duration % 60).toString().padStart(2, '0')}
+                         </span>
+                         {/* We can add viewed status or other metadata here */}
+                      </div>
+
+                       {/* Notes Preview - Click to Edit */}
+                       {video.notes && (
+                            <div 
+                                onClick={() => openNotesDialog(video._id)}
+                                className="mt-2 text-sm text-foreground/80 bg-muted/30 p-2.5 rounded-md border-l-2 border-primary/40 cursor-pointer hover:bg-muted/50 hover:border-primary transition-all italic truncate max-w-xl group/note"
+                            >
+                                <span className="mr-2 not-italic text-primary/70">Note:</span>
+                                {video.notes}
+                            </div>
+                        )}
                   </div>
-                  
-                  {/* Notes Preview */}
-                    {video.notes && (
-                        <div className="text-sm text-muted-foreground bg-muted/50 p-2 rounded-md border border-border/50 mt-2 line-clamp-2">
-                            {video.notes}
-                        </div>
-                    )}
-                    
-                   <div className="pt-2 flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <Button
+
+                  {/* Right: Actions */}
+                  <div className="flex items-center gap-2 shrink-0 self-start sm:self-center">
+                       <Button
                             variant="ghost"
                             size="sm"
-                            className="h-7 text-xs gap-1.5 text-muted-foreground hover:text-foreground"
+                            className={`h-9 border gap-2 transition-all ${video.notes 
+                                ? 'bg-primary/10 text-primary border-primary/20 hover:bg-primary/20' 
+                                : 'bg-muted/30 text-muted-foreground border-transparent hover:bg-muted hover:text-foreground'
+                            }`}
                             onClick={() => openNotesDialog(video._id)}
                         >
-                            <MessageSquare className="h-3.5 w-3.5" />
-                            {video.notes ? 'Edit Notes' : 'Add Note'}
+                            <MessageSquare className="w-4 h-4" />
+                            <span className="hidden sm:inline">{video.notes ? 'Edit Note' : 'Add Note'}</span>
                         </Button>
-                   </div>
+                  </div>
+
                 </div>
             </div>
           ))}
@@ -298,22 +326,22 @@ export default function PlaylistPage() {
       </main>
 
       <Dialog open={showNotesDialog} onOpenChange={setShowNotesDialog}>
-        <DialogContent className="bg-card text-card-foreground border-border">
+        <DialogContent className="bg-card text-card-foreground border-border max-w-lg">
           <DialogHeader>
             <DialogTitle>Video Notes</DialogTitle>
-            <DialogDescription className="text-muted-foreground">Add personal notes, timestamps, or key takeaways.</DialogDescription>
+            <DialogDescription className="text-muted-foreground">Capture your thoughts for this video.</DialogDescription>
           </DialogHeader>
           <Textarea
             value={notesText}
             onChange={(e) => setNotesText(e.target.value)}
-            placeholder="Write your notes here..."
-            className="resize-none min-h-[150px] bg-background border-input focus-visible:ring-primary"
+            placeholder="Type your notes here..."
+            className="flex min-h-[160px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 resize-y"
           />
           <DialogFooter>
             <Button variant="ghost" onClick={() => setShowNotesDialog(false)} className="text-muted-foreground hover:text-foreground">
               Cancel
             </Button>
-            <Button onClick={saveNotes} className="bg-primary text-primary-foreground">Save Notes</Button>
+            <Button onClick={saveNotes} className="bg-primary text-primary-foreground">Save Note</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

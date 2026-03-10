@@ -76,7 +76,7 @@ export function AddPlaylistForm({ onPlaylistAdded, variant = 'default' }: AddPla
         }
         
         const savedPlaylist = await saveRes.json();
-        router.push(`/playlist/${savedPlaylist._id}`);
+        router.push(`/sheet/${savedPlaylist._id}`);
       } else {
         // 2b. Save to localStorage for guests
         const existing = localStorage.getItem('playlists');
@@ -105,7 +105,7 @@ export function AddPlaylistForm({ onPlaylistAdded, variant = 'default' }: AddPla
         
         window.dispatchEvent(new Event('local-playlist-update'));
         
-        router.push(`/playlist/${newPlaylist._id}`);
+        router.push(`/sheet/${newPlaylist._id}`);
       }
 
       setUrl('');

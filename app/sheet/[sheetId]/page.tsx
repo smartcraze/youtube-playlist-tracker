@@ -97,7 +97,7 @@ const InlineNotes = memo(function InlineNotes({
         value={text}
         onChange={handleChange}
         placeholder="Add a note…"
-        rows={1}
+        rows={2}
         className="w-full resize-none rounded-md border border-border bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring transition-colors"
         onFocus={(e) => {
           // Auto-expand on focus
@@ -106,7 +106,7 @@ const InlineNotes = memo(function InlineNotes({
         onBlur={(e) => {
           // Collapse if empty
           if (!e.target.value.trim()) {
-            e.target.rows = 1;
+            e.target.rows = 2;
           }
         }}
       />

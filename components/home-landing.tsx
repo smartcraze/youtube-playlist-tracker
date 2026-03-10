@@ -24,7 +24,7 @@ export function HomeLanding() {
 
         <Button
           size="lg"
-          onClick={() => signIn('google', { callbackUrl: '/sheet' })}
+          onClick={() => signIn('google')}
           className="w-full max-w-xs mx-auto"
         >
           Sign in with Google

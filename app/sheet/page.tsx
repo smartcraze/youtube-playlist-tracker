@@ -10,6 +10,7 @@ import { Input } from '@/components/ui/input';
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogFooter,
@@ -182,7 +183,7 @@ export default function SheetListPage() {
           router.push(`/sheet/${saved._id}`);
         } else {
           // Guest - save locally
-          const generatedId = Math.random().toString(36).substr(2, 9);
+          const generatedId = crypto.randomUUID();
           const existing = localStorage.getItem('playlists');
           const playlists = existing ? JSON.parse(existing) : [];
 
@@ -264,6 +265,9 @@ export default function SheetListPage() {
         <DialogContent className="bg-card text-card-foreground border-border max-w-md">
           <DialogHeader>
             <DialogTitle>New sheet</DialogTitle>
+            <DialogDescription>
+              Paste a YouTube playlist or video URL to create a new sheet.
+            </DialogDescription>
           </DialogHeader>
           <form onSubmit={handleCreate} className="space-y-4">
             <div>

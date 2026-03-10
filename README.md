@@ -174,26 +174,35 @@ youtube-playlist/
 │   │   └── videos/[id]/              # Video update routes
 │   ├── auth/
 │   │   └── signin/                   # Google login page
+│   ├── sheet/
+│   │   ├── page.tsx                  # Sheet list page
+│   │   └── [sheetId]/
+│   │       └── page.tsx              # Sheet detail (focus mode)
+│   ├── playlist/
+│   │   └── [id]/
+│   │       └── page.tsx              # Legacy redirect → /sheet/[id]
 │   ├── layout.tsx                    # Root layout with providers
-│   ├── page.tsx                      # Dashboard (main page)
+│   ├── page.tsx                      # Home (auth gate → /sheet)
 │   └── globals.css                   # Global styles + theme
 ├── components/
 │   ├── ui/                           # shadcn components
 │   ├── header.tsx                    # Navigation header
-│   ├── playlist-card.tsx             # Playlist display
-│   ├── video-item.tsx                # Video row component
-│   ├── add-playlist-form.tsx          # Add playlist modal
-│   ├── stats-card.tsx                # Stats display
+│   ├── app-layout.tsx                # Layout with topbar
+│   ├── focus-layout.tsx              # Distraction-free layout
+│   ├── home-landing.tsx              # Minimal landing for guests
+│   ├── landing-page-client.tsx       # Legacy landing page
+│   ├── landing-playlist-grid.tsx     # Playlist grid/list
+│   ├── add-playlist-form.tsx         # Add playlist form
 │   ├── theme-provider.tsx            # Theme system
 │   └── auth-provider.tsx             # NextAuth context
 ├── lib/
 │   ├── mongodb.ts                    # DB connection
 │   ├── auth.ts                       # NextAuth config
 │   ├── youtube.ts                    # YouTube fetcher
+│   ├── tokens.ts                     # Design tokens
 │   └── utils.ts                      # Utilities
 ├── models/
 │   └── index.ts                      # Mongoose schemas
-├── .env.local                        # Environment variables
 └── package.json
 ```
 
@@ -209,6 +218,19 @@ youtube-playlist/
 - `PATCH /api/videos/[id]` - Update video (completion, notes)
 
 All routes require authentication via NextAuth.
+
+## 🗺️ Page Routes
+
+| Route | Description |
+|-------|-------------|
+| `/` | Home – redirects authenticated users to `/sheet`, shows sign-in landing for guests |
+| `/sheet` | Sheet list – lists all sheets, "New sheet" modal to create from YouTube URL |
+| `/sheet/:sheetId` | Sheet detail – distraction-free focus mode, inline notes, no topbar |
+| `/playlist/:id` | Legacy redirect → `/sheet/:id` |
+
+### Layouts
+- **AppLayout** – includes the header/topbar, used on `/sheet`
+- **FocusLayout** – no topbar, distraction-free, used on `/sheet/:sheetId`
 
 ## 🗄️ Database Schema
 

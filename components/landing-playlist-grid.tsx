@@ -155,7 +155,7 @@ export function LandingPlaylistGrid({ initialPlaylists = [] }: LandingPlaylistGr
                        
                        {/* Explicit Icon link to internal details */}
                        <Link 
-                            href={`/playlist/${playlist._id}`} 
+                            href={`/sheet/${playlist._id}`} 
                             className="shrink-0 flex items-center justify-center h-10 w-10 rounded-md bg-muted text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors"
                         >
                            <ArrowRight className="w-5 h-5" />
@@ -211,7 +211,7 @@ export function LandingPlaylistGrid({ initialPlaylists = [] }: LandingPlaylistGr
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">
                                 <DropdownMenuItem asChild>
-                                    <Link href={`/playlist/${playlist._id}`} className="flex items-center cursor-pointer">
+                                    <Link href={`/sheet/${playlist._id}`} className="flex items-center cursor-pointer">
                                         <PlayCircle className="mr-2 h-4 w-4" />
                                         <span>Open in App</span>
                                     </Link>
